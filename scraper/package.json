@@ -1,0 +1,32 @@
+{
+  "name": "mu-scraper",
+  "version": "1.0.0",
+  "description": "Scraper for Geo Data of sights in Munich",
+  "main": "index.js",
+  "scripts": {
+    "start": "ts-node src/app.ts"
+  },
+  "keywords": [
+    "scraper",
+    "geo",
+    "munich"
+  ],
+  "authors": [
+    "Roman Shchekotov",
+    "Roman Chernikov"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.1.3",
+    "cheerio": "1.0.0-rc.12",
+    "pretty": "^2.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^18.11.9",
+    "@types/pretty": "^2.0.1",
+    "ts-node": "^10.9.1",
+    "ts-node-dev": "^2.0.0",
+    "tsconfig-paths": "^4.1.0",
+    "typescript": "^4.9.3"
+  }
+}
