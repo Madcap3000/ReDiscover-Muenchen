@@ -10,12 +10,13 @@ async function loadMuseums() {
     const url = `${host}/wiki/Liste_der_Museen_in_M%C3%BCnchen`;
     let html = await axios.get(url);
     let $ = cheerio.load(html.data);
+    let regexpAcceptedLink = new RegExp('https://de\\.wikipedia\\.org/');
     const tableBody = $('table.wikitable').first().find('tbody');
     tableBody.children().each((_, e) => {
         const cell = $(e).find('td').first();
         const nameCell = cell.find('a').first();
         const [name, link] = [nameCell.text(), host + nameCell.attr('href')];
-        if(!link || link.includes("redlink=1")) return;
+        if(!link || link.includes("redlink=1") || !regexpAcceptedLink.test(link)) return; // delete '!' to find non-valid links found by scraper
         const geo = $(cell).find('span.geo').first();
         if(!geo) return;
         const lat = $(geo).find('span.latitude').first().text();
