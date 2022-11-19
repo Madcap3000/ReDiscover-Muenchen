@@ -68,7 +68,7 @@ async function loadStatues() {
     return data;
 }
 
-async function loadDenkmale() {
+async function loadMemorial() {
     const districts: Array<string> = [];
     const host = 'https://de.wikipedia.org';
     const urlMain = `${host}/wiki/Liste_der_Baudenkmäler_in_München`;
@@ -109,24 +109,38 @@ async function loadDenkmale() {
                     image = host + image;
                 }
 
-                if(/([Ww]ohnhaus|[Ww]ohnanlage|[Ee]ckhaus|[Bb]ürgerhaus)/.test(name)) {
-                    //data.push({name, link, image, type: "Wohnhaus", lat, lng});
-                }else if(/([Mm]ietshaus|[Gg]eschäftshaus)/.test(name)){
-                    //data.push({name, link, image, type: "Geschäftshaus", lat, lng});
-                }else if(/[Vv]illa/.test(name)){
-                    //data.push({name, link, image, type: "Villa", lat, lng});
-                }else if(/[Kk]irche/.test(name)){
-                    //data.push({name, link, image, type: "Kirche", lat, lng});
-                }else if(/([Rr]eihenhaus|[Ww]ohnblock|[Rr]eihenhäuser|[Hh]ausreihe)/.test(name)){
-                    //data.push({name, link, image, type: "Wohnblock", lat, lng});
+                if(/[Ss]chloss/.test(name)){
+                    data.push({name, link, image, type: "Schloss", lat, lng});
+                }else if(/[Dd]enkmal/.test(name)){
+                    data.push({name, link, image, type: "Denkmal", lat, lng});
+                }else if(/([Ww]erkstatt|[Ww]erkstätte)/.test(name)) {
+                    data.push({name, link, image, type: "Werkstatt", lat, lng});
                 }else if(/[Bb]runnen/.test(name)){
-                    //data.push({name, link, image, type: "Brunnen", lat, lng});
-                }else if(/[Ss]chulhaus/.test(name)){
-                    //data.push({name, link, image, type: "Schulhaus", lat, lng});
-                }else if(/[Ss]tandbild/.test(name)){
-                    //data.push({name, link, image, type: "Standbild", lat, lng});
-                }else{
-                    data.push({name, link, image, type: "unsure", lat, lng});
+                    data.push({name, link, image, type: "Brunnen", lat, lng});
+                }else if(/([Ss]tandbild|[Ss]kulptur)/.test(name)){
+                    data.push({name, link, image, type: "Skulptur", lat, lng});
+                }else if(/[Ff]riedhof/.test(name)){
+                    data.push({name, link, image, type: "Friedhof", lat, lng});
+                }else if(/[Bb]rücke/.test(name)){
+                    data.push({name, link, image, type: "Brücke", lat, lng});
+                }else if(/[Kk]irche|[Tt]empel/.test(name)){
+                    data.push({name, link, image, type: "Kirche", lat, lng});
+                }else if(/([Ww]ohnhaus|[Ww]ohnanlage|[Ee]ckhaus|[Bb]ürgerhaus|[Ee]inzelhaus|[Kk]leinhaus|[Hh]ochhaus)/.test(name)) {
+                    data.push({name, link, image, type: "Wohnhaus", lat, lng});
+                }else if(/([Mm]ietshaus|[Gg]eschäftshaus|[Gg]eschäftshäuser)/.test(name)){
+                    data.push({name, link, image, type: "Geschäftshaus", lat, lng});
+                }else if(/[Vv]ill[ae]/.test(name)){
+                    data.push({name, link, image, type: "Villa", lat, lng});
+                }else if(/([Rr]eihenhaus|[Ww]ohnblock|[Rr]eihenhäuser|[Hh]ausreihe|[Dd]oppelhaus|[Ww]ohnhäuser)/.test(name)){
+                    data.push({name, link, image, type: "Wohnblock", lat, lng});
+                }else if(/([Ss]chulhaus|[Gg]ymnasium)/.test(name)){
+                    data.push({name, link, image, type: "Schulhaus", lat, lng});
+                }else if(/[Bb]rücke/.test(name)){
+                    data.push({name, link, image, type: "Brücke", lat, lng});
+                }else if(/[Ww]egkreuz/.test(name)){
+                    data.push({name, link, image, type: "Wegkreuz", lat, lng});
+                }else {
+                    data.push({name, link, image, type: `unsure`, lat, lng});
                 }
             });
         });
@@ -138,11 +152,11 @@ async function loadDenkmale() {
     const data = await loadMuseums();
     // Check if out-directory exists and if not create it
     if(!existsSync('out')) mkdirSync('out');
-    writeFileSync('out/museums.json', JSON.stringify(data, null, 2));
+    writeFileSync('out/museums.js', JSON.stringify(data, null, 2));
 
     const dataS = await loadStatues();
-    writeFileSync('out/statues.json', JSON.stringify(dataS, null, 2));
+    writeFileSync('out/statues.js', JSON.stringify(dataS, null, 2));
 
-    const dataB = await loadDenkmale();
-    writeFileSync('out/denkmale.json', JSON.stringify(dataB, null, 2));
+    const dataB = await loadMemorial();
+    writeFileSync('out/denkmale.js', JSON.stringify(dataB, null, 2));
 })();
