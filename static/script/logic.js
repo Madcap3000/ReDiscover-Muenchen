@@ -78,29 +78,65 @@ function poiCard(poi) {
 }
 
 function loadPOIs() {
-    const proximity = 0.005;
+    let proximity = 0.005;
+
+    let counter = 0;
+    for(const array of [museums, memorials, statues]) {
+        for(const item of array) {
+            let dist = distance(item, coords);
+            if(!proximityCheck || dist < proximity) {
+                counter ++;
+            }
+        }
+    }
     //TODO: change depending on amount found
     interestingPoints = interestingPoints.clearLayers();
     commonBuildings = commonBuildings.clearLayers();
     nonClassified = nonClassified.clearLayers();
     wifiLayer = wifiLayer.clearLayers();
+    let sortedMap = {};
     for(const array of [museums, memorials, statues]) {
         for(const item of array) {
             let dist = distance(item, coords);
             if(!proximityCheck || dist < proximity) {
-                let marker = L.marker([item.lat, item.lng], {
-                    icon: icon(item),
-                    alt: `poi-${item.type}`
-                });
-                marker.bindPopup(poiCard(item));
-                if(item.type === 'unsure') {
-                    nonClassified.addLayer(marker);
-                } else if(['Wohnhaus','Geschäftshaus'].includes(item.type)) {
-                    commonBuildings.addLayer(marker);
-                } else {
-                    interestingPoints.addLayer(marker);
+                if(!proximityCheck) {
+                    let marker = L.marker([item.lat, item.lng], {
+                        icon: icon(item),
+                        alt: `poi-${item.type}`
+                    });
+                    marker.bindPopup(poiCard(item));
+                    if (item.type === 'unsure') {
+                        nonClassified.addLayer(marker);
+                    } else if (['Wohnhaus', 'Geschäftshaus'].includes(item.type)) {
+                        commonBuildings.addLayer(marker);
+                    } else {
+                        interestingPoints.addLayer(marker);
+                    }
+                }else{
+                    sortedMap[dist] = item;
                 }
             }
+        }
+    }
+    if(proximityCheck) {
+        const keys = Object.keys(sortedMap).sort();
+        counter = 0;
+        for(const key of keys) {
+            if(counter > 100) break;
+            let item = sortedMap[key];
+            let marker = L.marker([item.lat, item.lng], {
+                icon: icon(item),
+                alt: `poi-${item.type}`
+            });
+            marker.bindPopup(poiCard(item));
+            if (item.type === 'unsure') {
+                nonClassified.addLayer(marker);
+            } else if (['Wohnhaus', 'Geschäftshaus'].includes(item.type)) {
+                commonBuildings.addLayer(marker);
+            } else {
+                interestingPoints.addLayer(marker);
+            }
+            counter++;
         }
     }
     for(const hotspot of wifi) {

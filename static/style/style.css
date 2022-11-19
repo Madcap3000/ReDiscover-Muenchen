@@ -5,33 +5,41 @@
 }
 @media only screen and (orientation: landscape) {
     .leaflet-popup-content {
+        font-size: 16px;
         width: 30vw;
         height: auto;
         max-height: 80vh;
         overflow-y: scroll;
         overflow-x: clip;
     }
+
+    .leaflet-marker-icon[src^=icon] {
+        background-color: rgba(70, 70, 70, 0.3);
+        padding: 16px;
+        border-radius: 25%;
+    }
 }
 
 @media only screen and (orientation: portrait) {
     .leaflet-popup-content {
-        width: 30vw;
+        font-size: 24px;
+        width: 60vw;
         height: auto;
-        max-height: 30vh;
+        max-height: 50vh;
         overflow-y: scroll;
         overflow-x: clip;
+    }
+
+    .leaflet-marker-icon[src^=icon] {
+        background-color: rgba(70, 70, 70, 0.3);
+        padding: 16px;
+        border-radius: 25%;
     }
 }
 
 .leaflet-popup-content::-webkit-scrollbar {
     width: 0;
     background: transparent;
-}
-
-.leaflet-marker-icon[src^=icon] {
-    background-color: rgba(70, 70, 70, 0.3);
-    padding: 16px;
-    border-radius: 25%;
 }
 
 .leaflet-marker-icon[src^=icon][alt=poi-Brunnen],
