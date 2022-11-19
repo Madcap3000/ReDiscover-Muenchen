@@ -30,7 +30,7 @@ export default {
 
       },
       //url: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-      url: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+      url: 'http://localhost/tile/{z}/{x}/{y}.png',
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
       center: [48.13743, 11.57549],
       style: `height: 100vh; width: 70vw;`
