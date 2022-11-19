@@ -91,8 +91,12 @@ async function loadStatues() {
 
     let image = processImg($, e);
 
-    let description = (processDescription($, e, host, 4) +
-      processDescription($, e, host, 5)).trim()
+    let author = processDescription($, e, host, 4);
+    let description_ = processDescription($, e, host, 5).trim();
+    if(author) author = "<br>Author: "+author;
+    if(description_) description_ = "<br>Description: "+description_;
+
+    let description = author + description_;
 
     data.push({ name, link, image,description, type: 'statue', lat, lng });
   });

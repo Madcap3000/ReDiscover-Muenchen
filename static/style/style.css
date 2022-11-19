@@ -3,6 +3,13 @@
     width: 95vw;
     margin-inline: auto;
 }
+
+.userMarker{
+    background-color: rgba(70, 70, 70, 0.0);
+    padding: 16px;
+    border-radius: 25%;
+}
+
 @media only screen and (orientation: landscape) {
     .leaflet-popup-content {
         font-size: 16px;
@@ -53,6 +60,10 @@
 .leaflet-marker-icon[src^=icon][alt=poi-Denkmal],
 .leaflet-marker-icon[src^=icon][alt=poi-Wegkreuz] {
     background-color: rgba(198, 156, 109, 0.5) !important;
+}
+
+.leaflet-marker-icon[src^=icon][class*=MyPos]{
+    background-color: rgba(198, 156, 109, 0.0) !important;
 }
 
 
