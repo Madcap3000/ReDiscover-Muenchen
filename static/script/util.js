@@ -31,3 +31,34 @@ function weigh(sight) {
   
   return weight;
 }
+
+/**
+ * Finds an appropriate icon-string for the sight.
+ * 
+ * @param {Sight} sight
+ * @returns {string} 
+ */
+function icon(sight) {
+  const poiResources = {
+    'Schloss': 'castle',
+    'Denkmal': 'monument',
+    'Werkstatt': 'workshop',
+    'Brunnen': 'well',
+    'Skulptur': 'sculpture',
+    'Friedhof': 'cemetary',
+    'Brücke': 'bridge',
+    'Kirche': 'church',
+    'Wohnhaus': 'house',
+    'Geschäftshaus': 'shop',
+    'Villa': 'villa',
+    'Wohnblock': 'house',
+    'Schulhaus': 'education',
+    'Wegkreuz': 'intersection',
+    'Museum': 'museum',
+  };
+  if(sight.type in poiResources) {
+    return poiResources[sight.type];
+  } else {
+    return 'unknown';
+  }
+}
