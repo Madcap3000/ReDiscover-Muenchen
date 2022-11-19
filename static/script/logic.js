@@ -1,5 +1,6 @@
 let coords = { lat: 48.137154, lng: 11.576124 };
 let proximityCheck = true;
+let MaxLoadedAmount = 40;
 
 let wifiLayer = L.markerClusterGroup();
 let locationLayer = L.markerClusterGroup();
@@ -47,6 +48,15 @@ map.locate({setView: false});
 
 function distance(posA, posB) {
     return Math.sqrt(Math.pow(posA.lat - posB.lat, 2) + Math.pow(posA.lng - posB.lng, 2));
+}
+
+function evaluateWeight(item){
+    let answer = 1.0;
+    if(/href=/.test(item.description)) answer *= 2.0;
+    if(!item.image) answer *= 0.4;
+    if(!item.link) answer *= 0.6;
+    if(item.description.length < 30) answer *= 0.7;
+    return answer;
 }
 
 function poiInfo(poi) {
@@ -113,7 +123,7 @@ function loadPOIs() {
                         interestingPoints.addLayer(marker);
                     }
                 }else{
-                    sortedMap[dist] = item;
+                    sortedMap[dist/evaluateWeight(item)] = item;
                 }
             }
         }
@@ -122,7 +132,7 @@ function loadPOIs() {
         const keys = Object.keys(sortedMap).sort();
         counter = 0;
         for(const key of keys) {
-            if(counter > 100) break;
+            if(counter > MaxLoadedAmount) break;
             let item = sortedMap[key];
             let marker = L.marker([item.lat, item.lng], {
                 icon: icon(item),

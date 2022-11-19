@@ -40,27 +40,28 @@ function weigh(sight) {
  */
 function icon(sight) {
   const poiResources = {
-    'Schloss': 'castle',
+    'Schloss': 'Castle-01',
     'Denkmal': 'Monument-01',
-    'Werkstatt': 'workshop',
-    'Brunnen': 'well',
-    'Skulptur': 'sculpture',
-    'Friedhof': 'cemetary',
-    'Brücke': 'bridge',
-    'Kirche': 'church',
-    'Wohnhaus': 'house',
-    'Geschäftshaus': 'shop',
-    'Villa': 'villa',
-    'Wohnblock': 'house',
-    'Schulhaus': 'education',
-    'Wegkreuz': 'intersection',
-    'museum': 'museum',
-    'statue': 'sculpture'
+    'Werkstatt': 'Factory-01',
+    'Brunnen': 'Fountain-01',
+    'Skulptur': 'Monument-01',
+    'Friedhof': 'Graveyard-01',
+    'Brücke': 'Bridge-01',
+    'Kirche': 'Church-01',
+    'Wohnhaus': 'House-01',
+    'Geschäftshaus': 'House-01',
+    'Villa': 'Villa-01',
+    'Wohnblock': 'House-01',
+    'Schulhaus': 'School-01',
+    'Wegkreuz': 'Crossroad-01',
+    'museum': 'Museum-01',
+    'statue': 'Monument-01'
   };
+  //icons creator Michail Zhukov(https://www.behance.net/michailzhukov)
   let str = (sight.type in poiResources) ?
-    poiResources[sight.type] : 'unknown';
+    poiResources[sight.type] : 'Question-01';
   return L.icon({
-    iconUrl: `icon/${str}.png`,
+    iconUrl: `icons/${str}.png`,
     iconSize: [32, 32],
     iconAnchor: [16, 16],
     popupAnchor: [0, -16]
