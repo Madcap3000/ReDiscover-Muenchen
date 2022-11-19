@@ -22,31 +22,19 @@ let layerControl = L.control.layers({
     "Your Location": locationLayer
 });
 
-const ProximityControl = L.Control.extend({
-    options: {
-        position: 'bottomleft',
-    },
-    onAdd: function() {
-        // Create Custom Map Button
-        const toggleContainer = L.DomUtil.create('label');
-        const toggle = L.DomUtil.create('input');
-        const toggleSpan = L.DomUtil.create('span');
-        toggleContainer.classList.add('switch');
-        toggle.type = "checkbox";
-        toggle.checked = true;
-        toggle.classList.add('toggle-switch');
-        toggle.addEventListener('change', function() {
-            proximityCheck = toggle.checked;
-            loadPOIs();
-        });
-        toggleSpan.classList.add('slider', 'round');
-        toggleContainer.appendChild(toggle);
-        toggleContainer.appendChild(toggleSpan);
-        return toggleContainer;
+document.onkeydown = function(e) {
+    if(e.key === 'x' && proximityCheck) {
+        proximityCheck = false;
+        loadPOIs();
     }
-});
+}
 
-map.addControl(new ProximityControl());
+document.onkeyup = function(e) {
+    if(e.key === 'x' && !proximityCheck) {
+        proximityCheck = true;
+        loadPOIs();
+    }
+}
 
 layerControl.addTo(map);
 map.locate({setView: false});
@@ -82,7 +70,7 @@ function loadPOIs() {
     for(const array of [museums, memorials, statues]) {
         for(const item of array) {
             let dist = distance(item, coords);
-            if(proximityCheck && dist < proximity) {
+            if(!proximityCheck || dist < proximity) {
                 let marker = L.marker([item.lat, item.lng], { icon: icon(item) });
                 marker.bindPopup(poiCard(item));
                 markerLayer.addLayer(marker);
@@ -90,7 +78,7 @@ function loadPOIs() {
         }
     }
     for(const hotspot of wifi) {
-        if(proximityCheck && distance(hotspot, coords) < proximity) {
+        if(!proximityCheck || distance(hotspot, coords) < proximity) {
             let wifiArea = L.circle([hotspot.lat, hotspot.lng], {
                 color: 'blue',
                 fillColor: '#00307f',
