@@ -22,6 +22,21 @@
     border-radius: 25%;
 }
 
+.leaflet-marker-icon[src^=icon][alt=poi-Brunnen],
+.leaflet-marker-icon[src^=icon][alt=poi-Brücke] {
+    background-color: rgba(151, 227, 120, 0.7) !important;
+}
+
+.leaflet-marker-icon[src^=icon][alt=poi-Friedhof],
+.leaflet-marker-icon[src^=icon][alt=poi-Skulptur],
+.leaflet-marker-icon[src^=icon][alt=poi-Schloss],
+.leaflet-marker-icon[src^=icon][alt=poi-Denkmal],
+.leaflet-marker-icon[src^=icon][alt=poi-Wegkreuz] {
+    background-color: rgba(173, 104, 33, 0.7) !important;
+}
+
+
+
 /* Toggle Switch */
 /* The switch - the box around the slider */
 .switch {

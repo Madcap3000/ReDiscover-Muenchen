@@ -3,21 +3,27 @@ let proximityCheck = true;
 
 let wifiLayer = L.markerClusterGroup();
 let locationLayer = L.markerClusterGroup();
-let markerLayer = L.markerClusterGroup();
+let interestingPoints = L.markerClusterGroup();
+let commonBuildings = L.markerClusterGroup();
+let nonClassified = L.markerClusterGroup();
 let colorLayer = new L.StamenTileLayer("watercolor");
 let terrainLayer = new L.StamenTileLayer("terrain");
 let tonerLayer = new L.StamenTileLayer("toner");
 
 let map = L.map('map').setView([48.137154, 11.576124], 17);
 map.addLayer(colorLayer);
-map.addLayer(markerLayer);
+map.addLayer(interestingPoints);
+map.addLayer(commonBuildings);
+map.addLayer(nonClassified);
 map.addLayer(wifiLayer);
 let layerControl = L.control.layers({
     "Watercolor Map": colorLayer,
     "Terrain Map": terrainLayer,
     "Monochromatic Map": tonerLayer
 }, {
-    "Interesting POIs": markerLayer,
+    "Interesting POIs": interestingPoints,
+    "Common Buildings": commonBuildings,
+    "Exceptional POIs": nonClassified,
     "Wifi Hotspots": wifiLayer,
     "Your Location": locationLayer
 });
@@ -65,15 +71,24 @@ function poiCard(poi) {
 
 function loadPOIs() {
     const proximity = 0.005;
-    markerLayer = markerLayer.clearLayers();
+    interestingPoints = interestingPoints.clearLayers();
     wifiLayer = wifiLayer.clearLayers();
     for(const array of [museums, memorials, statues]) {
         for(const item of array) {
             let dist = distance(item, coords);
             if(!proximityCheck || dist < proximity) {
-                let marker = L.marker([item.lat, item.lng], { icon: icon(item) });
+                let marker = L.marker([item.lat, item.lng], {
+                    icon: icon(item),
+                    alt: `poi-${item.type}`
+                });
                 marker.bindPopup(poiCard(item));
-                markerLayer.addLayer(marker);
+                if(item.type === 'unsure') {
+                    nonClassified.addLayer(marker);
+                } else if(['Wohnhaus','Geschäftshaus'].includes(item.type)) {
+                    commonBuildings.addLayer(marker);
+                } else {
+                    interestingPoints.addLayer(marker);
+                }
             }
         }
     }
