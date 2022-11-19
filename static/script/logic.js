@@ -72,6 +72,8 @@ function poiCard(poi) {
 function loadPOIs() {
     const proximity = 0.005;
     interestingPoints = interestingPoints.clearLayers();
+    commonBuildings = commonBuildings.clearLayers();
+    nonClassified = nonClassified.clearLayers();
     wifiLayer = wifiLayer.clearLayers();
     for(const array of [museums, memorials, statues]) {
         for(const item of array) {
