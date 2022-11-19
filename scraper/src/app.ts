@@ -30,7 +30,7 @@ async function loadMuseums() {
             image = host + image;
         }
 
-        data.push({ name, link,image, type: 'museum', lat, lng });
+        data.push({ name, link,image,description:'', type: 'museum', lat, lng });
     });
     return data;
 }
@@ -63,7 +63,14 @@ async function loadStatues() {
             image = host + image;
         }
 
-        data.push({ name, link, image, type: 'statue', lat, lng });
+        let description1 = $(e).find('td+td+td+td').html()?.trim();
+        let description2 = $(e).find('td+td+td+td+td').html()?.trim()
+        let description = description1 + ' ' + description2;
+        if(!description) description = '';
+        description = description.replace(/<a[^>]+href="[^"]*redlink[^"]*"[^>]*>([^<]+)<\/a>/g, (_, c) => c);
+        description = description.replace(/href="([^"]*)"/g, (_, c) => "href=\"" + host + c + "\"");
+
+        data.push({ name, link, image,description, type: 'statue', lat, lng });
     });
     return data;
 }
@@ -109,38 +116,41 @@ async function loadMemorial() {
                     image = host + image;
                 }
 
+                let description=$(ee).find('td+td+td').first().html()?.trim();
+                if(!description) description = '';
+                description = description.replace(/<a[^>]+href="[^"]*redlink[^"]*">([^<]+)<\/a>/g, (_, c) => c);
+                description = description.replace(/href="([^"]*)"/g, (_, c) => "href=\"" + host + c + "\"");
+
                 if(/[Ss]chloss/.test(name)){
-                    data.push({name, link, image, type: "Schloss", lat, lng});
+                    data.push({name, link, image,description, type: "Schloss", lat, lng});
                 }else if(/[Dd]enkmal/.test(name)){
-                    data.push({name, link, image, type: "Denkmal", lat, lng});
+                    data.push({name, link, image,description, type: "Denkmal", lat, lng});
                 }else if(/([Ww]erkstatt|[Ww]erkstätte)/.test(name)) {
-                    data.push({name, link, image, type: "Werkstatt", lat, lng});
+                    data.push({name, link, image,description, type: "Werkstatt", lat, lng});
                 }else if(/[Bb]runnen/.test(name)){
-                    data.push({name, link, image, type: "Brunnen", lat, lng});
+                    data.push({name, link, image,description, type: "Brunnen", lat, lng});
                 }else if(/([Ss]tandbild|[Ss]kulptur)/.test(name)){
-                    data.push({name, link, image, type: "Skulptur", lat, lng});
+                    data.push({name, link, image,description, type: "Skulptur", lat, lng});
                 }else if(/[Ff]riedhof/.test(name)){
-                    data.push({name, link, image, type: "Friedhof", lat, lng});
+                    data.push({name, link, image,description, type: "Friedhof", lat, lng});
                 }else if(/[Bb]rücke/.test(name)){
-                    data.push({name, link, image, type: "Brücke", lat, lng});
+                    data.push({name, link, image,description, type: "Brücke", lat, lng});
                 }else if(/[Kk]irche|[Tt]empel/.test(name)){
-                    data.push({name, link, image, type: "Kirche", lat, lng});
+                    data.push({name, link, image,description, type: "Kirche", lat, lng});
                 }else if(/([Ww]ohnhaus|[Ww]ohnanlage|[Ee]ckhaus|[Bb]ürgerhaus|[Ee]inzelhaus|[Kk]leinhaus|[Hh]ochhaus)/.test(name)) {
-                    data.push({name, link, image, type: "Wohnhaus", lat, lng});
+                    data.push({name, link, image,description, type: "Wohnhaus", lat, lng});
                 }else if(/([Mm]ietshaus|[Gg]eschäftshaus|[Gg]eschäftshäuser)/.test(name)){
-                    data.push({name, link, image, type: "Geschäftshaus", lat, lng});
+                    data.push({name, link, image,description, type: "Geschäftshaus", lat, lng});
                 }else if(/[Vv]ill[ae]/.test(name)){
-                    data.push({name, link, image, type: "Villa", lat, lng});
+                    data.push({name, link, image,description, type: "Villa", lat, lng});
                 }else if(/([Rr]eihenhaus|[Ww]ohnblock|[Rr]eihenhäuser|[Hh]ausreihe|[Dd]oppelhaus|[Ww]ohnhäuser)/.test(name)){
-                    data.push({name, link, image, type: "Wohnblock", lat, lng});
+                    data.push({name, link, image,description, type: "Wohnblock", lat, lng});
                 }else if(/([Ss]chulhaus|[Gg]ymnasium)/.test(name)){
-                    data.push({name, link, image, type: "Schulhaus", lat, lng});
-                }else if(/[Bb]rücke/.test(name)){
-                    data.push({name, link, image, type: "Brücke", lat, lng});
+                    data.push({name, link, image,description, type: "Schulhaus", lat, lng});
                 }else if(/[Ww]egkreuz/.test(name)){
-                    data.push({name, link, image, type: "Wegkreuz", lat, lng});
+                    data.push({name, link, image,description, type: "Wegkreuz", lat, lng});
                 }else {
-                    data.push({name, link, image, type: `unsure`, lat, lng});
+                    data.push({name, link, image,description, type: `unsure`, lat, lng});
                 }
             });
         });
@@ -152,11 +162,11 @@ async function loadMemorial() {
     const data = await loadMuseums();
     // Check if out-directory exists and if not create it
     if(!existsSync('out')) mkdirSync('out');
-    writeFileSync('out/museums.js', JSON.stringify(data, null, 2));
+    writeFileSync('out/museums.js', 'const museums = ' + JSON.stringify(data, null, 2));
 
     const dataS = await loadStatues();
-    writeFileSync('out/statues.js', JSON.stringify(dataS, null, 2));
+    writeFileSync('out/statues.js', 'const statues = ' + JSON.stringify(dataS, null, 2));
 
     const dataB = await loadMemorial();
-    writeFileSync('out/denkmale.js', JSON.stringify(dataB, null, 2));
+    writeFileSync('out/denkmale.js','const denkmale = ' + JSON.stringify(dataB, null, 2));
 })();
