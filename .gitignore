@@ -2,3 +2,5 @@
 **/out/
 **.pbf
 **:Zone.Identifier
+
+.idea/

@@ -55,11 +55,14 @@ function icon(sight) {
     'Schulhaus': 'education',
     'Wegkreuz': 'intersection',
     'museum': 'museum',
-    'statue': 'sculpture',
+    'statue': 'sculpture'
   };
-  if(sight.type in poiResources) {
-    return poiResources[sight.type];
-  } else {
-    return 'unknown';
-  }
+  let str = (sight.type in poiResources) ?
+    poiResources[sight.type] : 'unknown';
+  return L.icon({
+    iconUrl: `icon/${str}.png`,
+    iconSize: [32, 32],
+    iconAnchor: [16, 16],
+    popupAnchor: [0, -16]
+  });
 }
