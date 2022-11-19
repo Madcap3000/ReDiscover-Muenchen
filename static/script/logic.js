@@ -71,6 +71,7 @@ function poiCard(poi) {
 
 function loadPOIs() {
     const proximity = 0.005;
+    //TODO: change depending on amount found
     interestingPoints = interestingPoints.clearLayers();
     commonBuildings = commonBuildings.clearLayers();
     nonClassified = nonClassified.clearLayers();

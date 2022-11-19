@@ -3,12 +3,24 @@
     width: 95vw;
     margin-inline: auto;
 }
+@media only screen and (orientation: landscape) {
+    .leaflet-popup-content {
+        width: 30vw;
+        height: auto;
+        max-height: 80vh;
+        overflow-y: scroll;
+        overflow-x: clip;
+    }
+}
 
-.leaflet-popup-content {
-    width: 30vw;
-    height: 80vh;
-    overflow-y: scroll;
-    overflow-x: clip;
+@media only screen and (orientation: portrait) {
+    .leaflet-popup-content {
+        width: 30vw;
+        height: auto;
+        max-height: 30vh;
+        overflow-y: scroll;
+        overflow-x: clip;
+    }
 }
 
 .leaflet-popup-content::-webkit-scrollbar {
