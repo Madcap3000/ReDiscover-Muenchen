@@ -54,7 +54,8 @@ function icon(sight) {
     'Wohnblock': 'house',
     'Schulhaus': 'education',
     'Wegkreuz': 'intersection',
-    'Museum': 'museum',
+    'museum': 'museum',
+    'statue': 'sculpture',
   };
   if(sight.type in poiResources) {
     return poiResources[sight.type];

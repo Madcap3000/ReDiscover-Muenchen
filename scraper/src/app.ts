@@ -168,5 +168,5 @@ async function loadMemorial() {
     writeFileSync('out/statues.js', 'const statues = ' + JSON.stringify(dataS, null, 2));
 
     const dataB = await loadMemorial();
-    writeFileSync('out/denkmale.js','const denkmale = ' + JSON.stringify(dataB, null, 2));
+    writeFileSync('out/memorials.js','const memorials = ' + JSON.stringify(dataB, null, 2));
 })();
