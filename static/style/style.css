@@ -44,7 +44,7 @@
 .leaflet-marker-icon[src^=icon][alt=poi-Schloss],
 .leaflet-marker-icon[src^=icon][alt=poi-Denkmal],
 .leaflet-marker-icon[src^=icon][alt=poi-Wegkreuz] {
-    background-color: rgba(173, 104, 33, 0.7) !important;
+    background-color: rgba(198, 156, 109, 0.5) !important;
 }
 
 

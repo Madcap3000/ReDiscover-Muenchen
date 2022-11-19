@@ -41,7 +41,7 @@ function weigh(sight) {
 function icon(sight) {
   const poiResources = {
     'Schloss': 'castle',
-    'Denkmal': 'Monument (1)',
+    'Denkmal': 'Monument-01',
     'Werkstatt': 'workshop',
     'Brunnen': 'well',
     'Skulptur': 'sculpture',

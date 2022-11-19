@@ -50,11 +50,19 @@ function distance(posA, posB) {
 }
 
 function poiInfo(poi) {
+    let header = `${poi.name}`;
+    if(poi.link) {
+        header = `<a href="${poi.link}">${header}</a>`;
+    }
+    return `${header} ${poi.description}`;
+}
+
+function poiHeader(poi) {
     let header = `<b>${poi.name}</b>`;
     if(poi.link) {
         header = `<a href="${poi.link}">${header}</a>`;
     }
-    return `${header}<br/>${poi.description}`;
+    return `<h3>${header}</h3>`;
 }
 
 function poiCard(poi) {
@@ -66,7 +74,7 @@ function poiCard(poi) {
             alt="${poi.name}" 
             style="width: 100%; height: auto;">`;
     }
-    return result + poiInfo(poi);
+    return poiHeader(poi) + result + poiInfo(poi);
 }
 
 function loadPOIs() {
