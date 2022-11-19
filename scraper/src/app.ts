@@ -222,7 +222,7 @@ function deduplicate(data: Array<Sight>): Array<Sight> {
   let classifiedCount = 0;
   for(const row of series) {
     for(const entry of row) {
-      if(entry.hasOwnProperty('type')) classifiedCount++;
+      if(entry.hasOwnProperty('type') && entry['type'] !== 'unsure') classifiedCount++;
       dataCount++;
     }
   }
