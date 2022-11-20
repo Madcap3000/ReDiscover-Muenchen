@@ -20,7 +20,7 @@ map.addLayer(colorLayer);
 map.addLayer(interestingPoints);
 map.addLayer(commonBuildings);
 map.addLayer(nonClassified);
-map.addLayer(wifiLayer);
+//map.addLayer(wifiLayer);
 let layerControl = L.control.layers({
     "Watercolor Map": colorLayer,
     "Terrain Map": terrainLayer,
@@ -128,7 +128,7 @@ function loadPOIs() {
                         icon: icon(item),
                         alt: `poi-${item.type}`
                     });
-                    marker.bindPopup(poiCard(item), {keepInView: true});
+                    marker.bindPopup(poiCard(item));
                     if (item.type === 'unsure') {
                         nonClassified.addLayer(marker);
                     } else if (['Wohnhaus', 'Geschäftshaus'].includes(item.type)) {
@@ -152,7 +152,7 @@ function loadPOIs() {
                 icon: icon(item),
                 alt: `poi-${item.type}`
             });
-            marker.bindPopup(poiCard(item), {keepInView: true});
+            marker.bindPopup(poiCard(item));
             if (item.type === 'unsure') {
                 nonClassified.addLayer(marker);
             } else if (['Wohnhaus', 'Geschäftshaus'].includes(item.type)) {
@@ -198,9 +198,8 @@ L.Control.CustomControl = L.Control.extend({
         let container = L.DomUtil.create('input');
         container.type = "button";
         container.title = "FindMe";
-        container.style.backgroundImage ="icons/MapPointer.png";
-
-        container.style.backgroundSize = "47px 47px";
+        container.style.backgroundImage = "url('icons/MapPointer.png')";
+        container.style.backgroundSize = "44px 44px";
         container.style.width = '47px';
         container.style.height = '47px';
         container.style.borderRadius = "5px";
@@ -242,6 +241,14 @@ L.control.customControl = function (opts) {
 }
 
 L.control.customControl().addTo(map);
+
+map.on('popupopen', function(e) {
+    let px = map.project(e.target._popup._latlng);
+    let po = map.project(map.getCenter());
+    px.x = (po.x + px.x)/2;
+    px.y -= e.target._popup._container.clientHeight/2;
+    map.panTo(map.unproject(px),{animate: true});
+});
 
 map.on('click', (e) => {
     let loc = e.latlng;
