@@ -1,11 +1,11 @@
 const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-let coords = {lat: 48.137154, lng: 11.576124};
+let coords = {lat: 48.1375, lng: 11.575556};
 let proximityCheck = true;
 let MaxLoadedAmount = 60;
-let startCoords = {lat: 48.137154, lng: 11.576124};
+const munichCoords = {lat: 48.137154, lng: 11.576124};
+let startCoords = munichCoords;
 let defaultZoom = 17;
 let proximity = 0.008;
-
 
 let wifiLayer = L.markerClusterGroup();
 let beerLayer = L.markerClusterGroup();
@@ -36,17 +36,26 @@ let layerControl = L.control.layers({
     "Mein Standort": locationLayer
 }, {});
 
-document.onkeydown = function (e) {
-    if (e.key === 'x' && proximityCheck) {
-        proximityCheck = false;
-        loadPOIs();
-    }
-}
-
 document.onkeyup = function (e) {
-    if (e.key === 'x' && !proximityCheck) {
-        proximityCheck = true;
+    console.log(`KEY-EVENT: (${e.key}; ${e.code})`);
+    if (e.code === 'KeyX') {
+        proximityCheck = !proximityCheck;
         loadPOIs();
+    } else if (e.code === 'KeyM') {
+        warp(munichCoords.lat, munichCoords.lng);
+    } else if(e.code === 'BracketLeft') {
+        map.zoomIn();
+    } else if(e.code === 'BracketRight') {
+        map.zoomOut();
+    } else if(['ArrowUp', 'ArrowLeft', 'ArrowDown', 'ArrowRight'].includes(e.code)) {
+        const step = 0.0004;
+        coords = ({
+            "ArrowUp": { lat: coords.lat + step, lng: coords.lng },
+            "ArrowLeft": { lat: coords.lat, lng: coords.lng - step },
+            "ArrowDown": { lat: coords.lat - step, lng: coords.lng },
+            "ArrowRight": { lat: coords.lat, lng: coords.lng + step }
+        })[e.key];
+        warp(coords.lat, coords.lng);
     }
 }
 
@@ -221,12 +230,8 @@ L.Control.CustomControl = L.Control.extend({
         container.style.backgroundColor = 'rgb(255,255,255)';
         container.style.borderColor = 'rgba(133,133,133,0.5)';
 
-        function onclc(){
-            map.flyTo(startCoords, defaultZoom);
-            locationLayer = locationLayer.clearLayers();
-            drawMe(startCoords, 10);
-            coords = startCoords;
-            loadPOIs();
+        function onClick(){
+            map.locate({setView: true, maxZoom: defaultZoom});
         }
         function out() {
             map.on('click', (e) => {
@@ -246,7 +251,7 @@ L.Control.CustomControl = L.Control.extend({
         }
         container.onmouseout = out;
         container.ontouchend = out;
-        container.onclick = onclc;
+        container.onclick = onClick;
         return container;
     }
 });
