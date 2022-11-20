@@ -55,9 +55,10 @@ function icon(sight) {
     'Schulhaus': 'School-01',
     'Wegkreuz': 'Crossroad-01',
     'museum': 'Museum-01',
-    'statue': 'Monument-01'
+    'statue': 'Monument-01',
+    'Biergarten': 'Beer-01'
   };
-  //icons creator Michail Zhukov(https://www.behance.net/michailzhukov)
+  //icons creator Mikhail Zhukov(https://www.behance.net/michailzhukov)
   let str = (sight.type in poiResources) ?
     poiResources[sight.type] : 'Question-01';
   return L.icon({
@@ -66,4 +67,13 @@ function icon(sight) {
     iconAnchor: [16, 16],
     popupAnchor: [0, -16]
   });
+}
+
+function warp(lat, lng, radius) {
+  if(!radius) radius = 0.005;
+  map.flyTo([lat, lng], 16);
+  locationLayer = locationLayer.clearLayers();
+  L.circle([lat, lng], radius).addTo(locationLayer);
+  coords = [lat, lng];
+  loadPOIs();
 }

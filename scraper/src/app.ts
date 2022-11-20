@@ -61,7 +61,8 @@ function processText(text: string) {
     .replace(/Ö/g, '&Ouml;')
     .replace(/ü/g, '&uuml;')
     .replace(/Ü/g, '&Uuml;')
-    .replace(/ß/g, '&szlig;');
+    .replace(/ß/g, '&szlig;')
+    .replace(/\b\[\d+]/g, '');
 }
 
 async function loadMuseums() {
@@ -168,6 +169,29 @@ async function loadMemorial() {
   return data;
 }
 
+async function loadBeerGarden() {
+  const data: Array<Sight> = [];
+  const host = 'https://de.wikipedia.org';
+  const url = `${host}/wiki/Liste_der_Bierg%C3%A4rten_in_M%C3%BCnchen`;
+  let html = await axios.get(url);
+  let $ = cheerio.load(html.data);
+  const tableBodyMain = $('table.wikitable').first().find('tbody');
+  tableBodyMain.children().each((_, e) => {
+    const name = $(e).find('td').first().text().trim();
+    const cleanName = processText(name);
+    let link = $(e).find('td').first().find('a').attr('href');
+    link = processLink(host, link);
+
+    let [lat, lng] = parseGeoLocationFromLink($, e);
+    if(!lat || !lng) return;
+    let image = processImg($, e);
+    let description = processDescription($, e, host);
+
+    data.push({ name: cleanName, link, image, description, type: 'Biergarten', lat, lng });
+  });
+  return data;
+}
+
 function deduplicate(data: Array<Sight>): Array<Sight> {
   const unique: Array<Sight> = [];
   const seen: Array<string> = [];
@@ -241,6 +265,11 @@ async function loadDistrict(string) {
     encoding: 'utf-8'
   });
 
+  const dataBeer = deduplicate(await loadBeerGarden());
+  writeFileSync('out/beergardens.js','const beergardens = ' + JSON.stringify(dataBeer, null, 2), {
+    encoding: 'utf-8'
+  });
+
   // WiFi Hotspots
   const dataUUID = [
     'bec8b9e3-0e55-438b-91bd-5f6a781f3efc',
@@ -252,7 +281,8 @@ async function loadDistrict(string) {
   const wirelessRawData: Array<Array<any>> = (await wireless).data.split('\n')
     .map(row => row.split(','));
   const wirelessData = wirelessRawData.slice(1, wirelessRawData.length)
-    .map(datum => { return { lat: datum[4], lng: datum[5], count: datum[3] }});
+    .map(datum => { return { lat: datum[4], lng: datum[5], count: datum[3] }})
+    .filter(datum => datum.lat && datum.lng);
 
   writeFileSync('out/wifi.js', 'const wifi = ' + JSON.stringify(wirelessData, null, 2), {
     encoding: 'utf-8'
@@ -260,7 +290,7 @@ async function loadDistrict(string) {
 
   const end = new Date().getTime();
   console.log(`Finished in ${end - start}ms`);
-  const series: Array<Array<Sight | Pick<Sight, "lat" | "lng">>> = [data, dataS, dataB, wirelessData];
+  const series: Array<Array<Sight | Pick<Sight, "lat" | "lng">>> = [data, dataS, dataB, dataBeer, wirelessData];
   let dataCount = 0;
   let classifiedCount = 0;
   for(const row of series) {

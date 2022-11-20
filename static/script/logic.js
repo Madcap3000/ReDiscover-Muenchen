@@ -7,6 +7,7 @@ let defaultZoom = 17;
 
 
 let wifiLayer = L.markerClusterGroup();
+let beerLayer = L.markerClusterGroup();
 let locationLayer = L.markerClusterGroup();
 let interestingPoints = L.markerClusterGroup();
 let commonBuildings = L.markerClusterGroup();
@@ -26,11 +27,12 @@ let layerControl = L.control.layers({
     "Terrain Map": terrainLayer,
     "Monochromatic Map": tonerLayer
 }, {
-    "Interesting POIs": interestingPoints,
-    "Common Buildings": commonBuildings,
-    "Exceptional POIs": nonClassified,
+    "Interessante Punkte": interestingPoints,
+    "Häuser": commonBuildings,
+    "Besondere POIs": nonClassified,
+    "Biergärten": beerLayer,
     "Wifi Hotspots": wifiLayer,
-    "Your Location": locationLayer
+    "Mein Standort": locationLayer
 }, {});
 
 document.onkeydown = function (e) {
@@ -54,7 +56,7 @@ function distance(posA, posB) {
     return Math.sqrt(Math.pow(posA.lat - posB.lat, 2) + Math.pow(posA.lng - posB.lng, 2));
 }
 
-function drawMe(loc, e){
+function drawMe(loc){
     //L.circle(loc, e,{fillColor: 'rgba(211,49,49,0.99)', stroke: false, fillOpacity: 0.8} ).addTo(locationLayer);
     let i = L.icon({
         iconUrl: `icons/MapPointer.png`,
@@ -102,7 +104,7 @@ function poiCard(poi, dist) {
     //          lng,lat to km
     let aTime= Math.ceil(((dist * 111)/(4.43))*60);
     let distHtml;
-    if(aTime == 1){
+    if(aTime === 1){
         distHtml = "<a style='color: lightslategray'><img height='12px' width='auto' src='icons/Time.png' alt='~'/> " + aTime  + " Minute entfernt</a><br/>";
     }else {
         distHtml = "<a style='color: lightslategray'><img height='12px' width='auto' src='icons/Time.png' alt='~'/> " + aTime + " Minuten entfernt</a><br/>";
@@ -165,6 +167,8 @@ function loadPOIs() {
                 nonClassified.addLayer(marker);
             } else if (['Wohnhaus', 'Geschäftshaus'].includes(item.type)) {
                 commonBuildings.addLayer(marker);
+            } else if(item.type === 'Biergarten') {
+                beerLayer.addLayer(marker);
             } else {
                 interestingPoints.addLayer(marker);
             }
@@ -197,11 +201,9 @@ map.on('locationfound', (e) => {
 });
 
 L.Control.CustomControl = L.Control.extend({
-
     options: {
         position: 'topright'
     },
-
     onAdd: function (map) {
         let container = L.DomUtil.create('input');
         container.type = "button";
