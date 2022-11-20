@@ -61,12 +61,20 @@ function icon(sight) {
   //icons creator Mikhail Zhukov(https://www.behance.net/michailzhukov)
   let str = (sight.type in poiResources) ?
     poiResources[sight.type] : 'Question-01';
-  return L.icon({
+
+  const iconData = {
     iconUrl: `icons/${str}.png`,
     iconSize: [32, 32],
     iconAnchor: [16, 16],
     popupAnchor: [0, -16]
-  });
+  };
+
+  if(isMobile) {
+    for(let key of ['iconSize', 'iconAnchor', 'popupAnchor']) {
+      iconData[key] = iconData[key].map(x => x << 1);
+    }
+  }
+  return L.icon(iconData);
 }
 
 function warp(lat, lng, radius) {

@@ -27,14 +27,81 @@
     }
 }
 
+.leaflet-touch:hover .leaflet-control-layers-toggle,
+.leaflet-control:hover, .leaflet-control:active,
+.leaflet-touch:active .leaflet-control-layers-toggle {
+    opacity: 1;
+}
+
+.leaflet-touch .leaflet-control-layers-toggle,
+.leaflet-control, .leaflet-control,
+.leaflet-touch .leaflet-control-layers-toggle {
+    opacity: 0.8;
+}
+
 @media only screen and (orientation: portrait) {
+    .leaflet-control-zoom-in, .leaflet-control-zoom-out {
+        width: 96px !important;
+        height: 96px !important;
+    }
+
+    .leaflet-control-zoom-in > span,
+    .leaflet-control-zoom-out > span {
+        font-size: 96px;
+        /* Center */
+        text-align: center;
+        line-height: 96px;
+    }
+
+    .leaflet-touch .leaflet-control-layers-toggle,
+    .leaflet-control {
+        font-size: 32px;
+        width: 96px;
+        height: 96px !important;
+        background-size: calc(0.9 * 96px) calc(0.9 * 96px) !important;
+    }
+
+    .leaflet-popup-close-button {
+        font-size: 64px !important;
+        margin: 32px 48px 0 0;
+    }
+
+    .leaflet-control[type=button] {
+        width: 96px !important;
+        padding: 3px 4px 3px 12px !important;
+    }
+
+    .leaflet-control-layers-expanded {
+        width: 45vw !important;
+        height: auto !important;
+    }
+
+    .leaflet-control-layers-base > label > span,
+    .leaflet-control-layers-overlays > label > span {
+        margin-left: 16px;
+    }
+
+    .leaflet-control-layers-selector {
+        top: -6px;
+        transform: scale(1.8);
+    }
+
+    .marker-cluster > * {
+        width: 64px !important;
+        height: 64px !important;
+        font-size: calc(64px / 3) !important;
+        /* Please center for me. CSS sucks */
+        line-height: 64px !important;
+        text-align: center;
+    }
+
     .leaflet-popup-content {
-        font-size: 24px;
-        width: 60vw;
+        width: 60vw !important;
         height: auto;
-        max-height: 50vh;
+        max-height: 60vh;
         overflow-y: scroll;
         overflow-x: clip;
+        font-size: 32px;
     }
 
     .leaflet-marker-icon[src^=icon] {

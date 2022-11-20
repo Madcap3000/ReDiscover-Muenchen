@@ -1,4 +1,4 @@
-
+const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 let coords = {lat: 48.137154, lng: 11.576124};
 let proximityCheck = true;
 let MaxLoadedAmount = 60;
@@ -22,7 +22,7 @@ map.addLayer(colorLayer);
 map.addLayer(interestingPoints);
 map.addLayer(commonBuildings);
 map.addLayer(nonClassified);
-//map.addLayer(wifiLayer);
+map.addLayer(locationLayer);
 let layerControl = L.control.layers({
     "Watercolor Map": colorLayer,
     "Terrain Map": terrainLayer,
@@ -59,12 +59,18 @@ function distance(posA, posB) {
 
 function drawMe(loc){
     //L.circle(loc, e,{fillColor: 'rgba(211,49,49,0.99)', stroke: false, fillOpacity: 0.8} ).addTo(locationLayer);
-    let i = L.icon({
+    let iconData = {
         iconUrl: `icons/MapPointer.png`,
         iconSize: [32, 32],
         iconAnchor: [16, 32],
         className: "MyPos"
-    });
+    };
+    if(isMobile) {
+        for(let key of ['iconSize', 'iconAnchor']) {
+            iconData[key] = iconData[key].map(x => x << 1);
+        }
+    }
+    let i = L.icon(iconData);
     L.marker(loc, {icon: i}).addTo(locationLayer);
 }
 
@@ -194,7 +200,6 @@ map.on('locationfound', (e) => {
     map.flyTo(loc, defaultZoom);
     locationLayer = locationLayer.clearLayers();
     drawMe(loc, radius);
-    locationLayer.addTo(map);
     coords = loc;
     startCoords = loc;
     loadPOIs();
