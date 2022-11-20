@@ -6,6 +6,23 @@ import * as cheerio from 'cheerio';
 
 import { Sight } from './sight';
 
+const dataFilter = [
+  { tests: [/[Ss]chloss/], type: 'Schloss' },
+  { tests: [/[Dd]enkmal/], type: 'Denkmal' },
+  { tests: [/[Ww]erkst[aä]tte?/], type: 'Werkstatt' },
+  { tests: [/[Bb]runnen/], type: 'Brunnen' },
+  { tests: [/[Ss]tandbild|[Ss]kulptur/], type: 'Skulptur' },
+  { tests: [/[Ff]friedhof/], type: 'Friedhof' },
+  { tests: [/[Bb]rücke/], type: 'Brücke' },
+  { tests: [/[Kk]irche/, /[Tt]emp[el]{2}/], type: 'Kirche' },
+  { tests: [/(?:[Ww]ohn|[Ee]ck|[Bb]ürger|[Ee]inzel|[Kk]lein|[Hh]och)?haus/, /[Ww]ohnanlage/], type: 'Wohnhaus' },
+  { tests: [/(?:[Mm]iets|[Gg]eschäfts)h[aä]us(er)?/], type: 'Geschäftshaus' },
+  { tests: [/[Vv]ill[ae]/], type: 'Villa' },
+  { tests: [/(?:[Rr]eihen|[Dd]oppel|[Ww]ohn)h[aä]us(?:er)?|[Hh]ausreihe|[Ww]ohnblock/], type: 'Wohnhaus' },
+  { tests: [/[Ss]chulhaus|[Gg]ymnasium/], type: 'Schulhaus' },
+  { tests: [/[Ww]egkreuz/], type: 'Wegkreuz' },
+];
+
 function processLink(host: string, link?: string) {
   if (!link) return undefined;
   if (link.includes("redlink=1")) return undefined;
@@ -106,23 +123,6 @@ async function loadStatues() {
 async function loadMemorial() {
   const districts: Array<string> = [];
 
-  const dataFilter = [
-    { tests: [/[Ss]chloss/], type: 'Schloss' },
-    { tests: [/[Dd]enkmal/], type: 'Denkmal' },
-    { tests: [/[Ww]erkst[aä]tte?/], type: 'Werkstatt' },
-    { tests: [/[Bb]runnen/], type: 'Brunnen' },
-    { tests: [/[Ss]tandbild|[Ss]kulptur/], type: 'Skulptur' },
-    { tests: [/[Ff]friedhof/], type: 'Friedhof' },
-    { tests: [/[Bb]rücke/], type: 'Brücke' },
-    { tests: [/[Kk]irche/, /[Tt]emp[el]{2}/], type: 'Kirche' },
-    { tests: [/(?:[Ww]ohn|[Ee]ck|[Bb]ürger|[Ee]inzel|[Kk]lein|[Hh]och)?haus/, /[Ww]ohnanlage/], type: 'Wohnhaus' },
-    { tests: [/(?:[Mm]iets|[Gg]eschäfts)h[aä]us(er)?/], type: 'Geschäftshaus' },
-    { tests: [/[Vv]ill[ae]/], type: 'Villa' },
-    { tests: [/(?:[Rr]eihen|[Dd]oppel|[Ww]ohn)h[aä]us(?:er)?|[Hh]ausreihe|[Ww]ohnblock/], type: 'Wohnhaus' },
-    { tests: [/[Ss]chulhaus|[Gg]ymnasium/], type: 'Schulhaus' },
-    { tests: [/[Ww]egkreuz/], type: 'Wegkreuz' },
-  ];
-
   const host = 'https://de.wikipedia.org';
   const urlMain = `${host}/wiki/Liste_der_Baudenkmäler_in_München`;
   districts.push("/wiki/Liste_der_Baudenkmäler_in_der_Münchner_Altstadt");
@@ -180,6 +180,39 @@ function deduplicate(data: Array<Sight>): Array<Sight> {
   return unique;
 }
 
+async function loadDistrict(string) {
+  const data: Array<Sight> = [];
+  const host = 'https://de.wikipedia.org';
+  const urlMain = `${host}${string}`;
+  let html = await axios.get(urlMain);
+  let $ = cheerio.load(html.data);
+  $('table.wikitable').each((_, e)=> {
+    $(e).find('tbody').children().each((__, ee) => {
+      const name = $(ee).find('td+td').first().text().trim();
+      const cleanName = processText(name);
+      let link = $(ee).find('td+td').first().find('a').attr('href');
+      link = processLink(host, link);
+
+      let [lat, lng] = parseGeoLocationFromLink($, ee);
+      if (!lat || !lng) return;
+      let image = processImg($, ee);
+      let description = processDescription($, ee, host);
+
+      for (const filter of dataFilter) {
+        for (const test of filter.tests) {
+          if (test.test(name)) {
+            data.push({name: cleanName, link, image, description, type: filter.type, lat, lng});
+            break;
+          }
+        }
+      }
+      data.push({name: cleanName, link, image, description, type: 'unsure', lat, lng});
+    });
+  });
+  return data;
+}
+
+
 (async () => {
   const start = new Date().getTime();
   const data = deduplicate(await loadMuseums());
@@ -193,6 +226,12 @@ function deduplicate(data: Array<Sight>): Array<Sight> {
   // Statues
   const dataS = deduplicate(await loadStatues());
   writeFileSync('out/statues.js', 'const statues = ' + JSON.stringify(dataS, null, 2), {
+    encoding: 'utf-8'
+  });
+
+  // Garching
+  const dataG = deduplicate(await loadDistrict("/wiki/Liste_der_Baudenkmäler_in_Garching_bei_München"));
+  writeFileSync('out/garching.js', 'const garching = ' + JSON.stringify(dataG, null, 2), {
     encoding: 'utf-8'
   });
 
