@@ -204,8 +204,7 @@ function deduplicate(data: Array<Sight>): Array<Sight> {
   return unique;
 }
 
-async function loadDistrict(string) {
-  const data: Array<Sight> = [];
+async function loadDistrict(string, data) {
   const host = 'https://de.wikipedia.org';
   const urlMain = `${host}${string}`;
   let html = await axios.get(urlMain);
@@ -253,14 +252,9 @@ async function loadDistrict(string) {
     encoding: 'utf-8'
   });
 
-  // Garching
-  const dataG = deduplicate(await loadDistrict("/wiki/Liste_der_Baudenkmäler_in_Garching_bei_München"));
-  writeFileSync('out/garching.js', 'const garching = ' + JSON.stringify(dataG, null, 2), {
-    encoding: 'utf-8'
-  });
-
-  // Memorials & Other Buildings
-  const dataB = deduplicate(await loadMemorial());
+  // Memorials & Other Buildings + Garching
+  const dataG = deduplicate(await loadMemorial());
+  const dataB = deduplicate(await loadDistrict("/wiki/Liste_der_Baudenkmäler_in_Garching_bei_München", dataG));
   writeFileSync('out/memorials.js','const memorials = ' + JSON.stringify(dataB, null, 2), {
     encoding: 'utf-8'
   });

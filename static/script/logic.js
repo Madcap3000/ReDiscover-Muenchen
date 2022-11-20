@@ -4,6 +4,7 @@ let proximityCheck = true;
 let MaxLoadedAmount = 60;
 let startCoords = {lat: 48.137154, lng: 11.576124};
 let defaultZoom = 17;
+let proximity = 0.008;
 
 
 let wifiLayer = L.markerClusterGroup();
@@ -113,7 +114,6 @@ function poiCard(poi, dist) {
 }
 
 function loadPOIs() {
-    let proximity = 0.005;
 
     let counter = 0;
     for (const array of [museums, memorials, statues]) {

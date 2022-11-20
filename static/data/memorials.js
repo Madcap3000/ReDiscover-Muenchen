@@ -59730,5 +59730,90 @@ const memorials = [
     "type": "unsure",
     "lat": "48.140739",
     "lng": "11.515032"
+  },
+  {
+    "name": "Ehemaliger Gasthof zur Post",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Garching_Gasthof_Post.JPG/480px-Garching_Gasthof_Post.JPG",
+    "description": "Zweigeschossiger Walmdachbau mit zum Teil gew&ouml;lbtem Erdgeschoss und fr&uuml;hklassizistischer Fassadengestaltung, Ende 18. Jahrhundert, wohl mit &auml;lterem Kern\n<p>Ehemaliges Nebengeb&auml;ude, jetzt Wohn- und Gesch&auml;ftshaus, breitgelagerter erdgeschossiger Mansarddachbau mit Schopfwalm, wohl vor 1800\n</p><p>Ehemaliges Nebengeb&auml;ude, jetzt Wohnhaus, zweigeschossiger Walmdachbau mit Putzgliederung, um 1900, wohl mit &auml;lterem Kern\n</p>",
+    "type": "unsure",
+    "lat": "48.25005",
+    "lng": "11.6529"
+  },
+  {
+    "name": "Wohn- und Gesch&auml;ftshaus",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Garching_Freisinger_Landstra%C3%9Fe_15.JPG/480px-Garching_Freisinger_Landstra%C3%9Fe_15.JPG",
+    "description": "Putzbau mit Schopfwalmdach und Dreiecksgiebel &uuml;ber der Balkon-Mittelachse, erbaut 1910",
+    "type": "Wohnhaus",
+    "lat": "48.25165",
+    "lng": "11.65325"
+  },
+  {
+    "name": "Gasthof Neuwirt",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Garching_Gasthof_Neuwirt.jpg/480px-Garching_Gasthof_Neuwirt.jpg",
+    "description": "Zweigeschossiger Eckbau mit Satteldach und historisierender Putzgliederung, um 1900",
+    "type": "unsure",
+    "lat": "48.24917",
+    "lng": "11.6514"
+  },
+  {
+    "name": "Katholische Kirche St. Katharina, ehemals Pfarrkirche",
+    "link": "https://de.wikipedia.org/wiki/St._Katharina_(Garching)",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/Garching_Kirche_St._Katharina.JPG/480px-Garching_Kirche_St._Katharina.JPG",
+    "description": "Schlichter Saalbau mit leicht eingezogenem Polygonalchor, romanischem Chorflankenturm des 13. Jahrhunderts und angef&uuml;gter zweigeschossiger Sakristei, sp&auml;tes 15. Jahrhundert, Barockisierung 1736; mit <a href=\"https://de.wikipedia.org/wiki/Kirchenausstattung\" title=\"Kirchenausstattung\">Ausstattung</a>",
+    "type": "Kirche",
+    "lat": "48.24876",
+    "lng": "11.65178"
+  },
+  {
+    "name": "Vorstadtvilla",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/MuenchnerStr39_Garching-01.jpg/480px-MuenchnerStr39_Garching-01.jpg",
+    "description": "Zweigeschossiger Putzbau mit Mansardwalmdach und reicher historisierender Gliederung, zum Teil fig&uuml;rlichem Stuckdekor und S&auml;ulenportikus, erbaut 1899",
+    "type": "Villa",
+    "lat": "48.24639",
+    "lng": "11.64945"
+  },
+  {
+    "name": "Wasserturm der Gemeinde",
+    "link": "https://de.wikipedia.org/wiki/Wasserturm_(Garching_bei_M%C3%BCnchen)",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Wasserturm_garching.jpg/480px-Wasserturm_garching.jpg",
+    "description": "Turmaufsatz in Formen eines sp&auml;tmittelalterlichen Stadtbefestigungsturms, 1912",
+    "type": "unsure",
+    "lat": "48.24406",
+    "lng": "11.64626"
+  },
+  {
+    "name": "Wohnhaus, sogenanntes Kanalschl&ouml;ssl",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Garching_Kanalschl%C3%B6ssl.JPG/480px-Garching_Kanalschl%C3%B6ssl.JPG",
+    "description": "Zweigeschossiger Walmdachbau mit Dreiecksgiebel-Risalit, im Kern 1734 (<a href=\"https://de.wikipedia.org/wiki/Dendrochronologie\" title=\"Dendrochronologie\">dendrochronologisch datiert</a>), umgebaut und erweitert um Mitte 18. Jahrhundert;\n<p>Mit Toreinfahrt und schmiedeeiserner Einfriedung, Ende 19. Jahrhundert\n</p>",
+    "type": "Wohnhaus",
+    "lat": "48.23745",
+    "lng": "11.64195"
+  },
+  {
+    "name": "Schlei&szlig;heimer Kanal",
+    "link": "https://de.wikipedia.org/wiki/Schlei%C3%9Fheimer_Kanal",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/NMKS_05.jpg/480px-NMKS_05.jpg",
+    "description": "Teil des Schlei&szlig;heimer Kanalsystems, auch Dirnismaninger Kanal genannt, f&uuml;hrt vom <a href=\"https://de.wikipedia.org/wiki/Garchinger_M%C3%BChlbach\" title=\"Garchinger M&uuml;hlbach\">Garchinger M&uuml;hlbach</a> zum <a href=\"https://de.wikipedia.org/wiki/Schloss_Schlei%C3%9Fheim\" class=\"mw-redirect\" title=\"Schloss Schlei&szlig;heim\">Schloss Schlei&szlig;heim</a>, intakt und wasserf&uuml;hrend, erbaut 1688/89",
+    "type": "unsure",
+    "lat": "48.236590",
+    "lng": "11.643526"
+  },
+  {
+    "name": "Forschungs- und Versuchsreaktor f&uuml;r Atomenergie mit Ringlabor, sogenanntes Atomei",
+    "link": "https://de.wikipedia.org/wiki/Forschungsreaktor_M%C3%BCnchen",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Atomei.JPG/480px-Atomei.JPG",
+    "description": "Eif&ouml;rmiger Kuppelbau in Eisenbeton mit Aluminiumverkleidung, von konzentrischem Ring eingeschossiger Laborgeb&auml;ude umfangen und mit &uuml;berdachten Eing&auml;ngen in den Hauptachsen, von <a href=\"https://de.wikipedia.org/wiki/Gerhard_Weber_(Architekt)\" title=\"Gerhard Weber (Architekt)\">Gerhard Weber</a> und Wolfgang Ende, 1956/57",
+    "type": "unsure",
+    "lat": "48.26586",
+    "lng": "11.67431"
+  },
+  {
+    "name": "Ehemaliger Wasserturm der Munitionsanstalt",
+    "link": "https://de.wikipedia.org/wiki/Wasserturm_Hochbr%C3%BCck",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Hochbr%C3%BCck%2C_Wasserturm_von_Nordwesten%2C_1.jpeg/480px-Hochbr%C3%BCck%2C_Wasserturm_von_Nordwesten%2C_1.jpeg",
+    "description": "Hoher Bau auf quadratischem Grundriss mit &uuml;berstehendem Aufsatz &uuml;ber Rundbogenkonsolen, 1917",
+    "type": "unsure",
+    "lat": "48.23932",
+    "lng": "11.60137"
   }
 ]
