@@ -231,7 +231,7 @@ L.Control.CustomControl = L.Control.extend({
         container.style.borderColor = 'rgba(133,133,133,0.5)';
 
         function onClick(){
-            map.locate({setView: true, maxZoom: defaultZoom});
+            map.locate({setView: false});
         }
         function out() {
             map.on('click', (e) => {
