@@ -90,7 +90,7 @@ function poiHeader(poi) {
     return `<h3>${header}</h3>`;
 }
 
-function poiCard(poi) {
+function poiCard(poi, dist) {
     let result = '';
     if (poi.image) {
         result += `<img 
@@ -99,7 +99,15 @@ function poiCard(poi) {
         alt="${poi.name}" 
         style="width: 100%; height: auto;">`;
     }
-    return poiHeader(poi) + result + poiInfo(poi);
+    //          lng,lat to km
+    let aTime= Math.ceil(((dist * 111)/(4.43))*60);
+    let distHtml;
+    if(aTime == 1){
+        distHtml = "<a style='color: lightslategray'><img height='12px' width='auto' src='icons/Time.png' alt='~'/> " + aTime  + " Minute entfernt</a><br/>";
+    }else {
+        distHtml = "<a style='color: lightslategray'><img height='12px' width='auto' src='icons/Time.png' alt='~'/> " + aTime + " Minuten entfernt</a><br/>";
+    }
+    return poiHeader(poi) + distHtml + result + poiInfo(poi);
 }
 
 function loadPOIs() {
@@ -128,7 +136,7 @@ function loadPOIs() {
                         icon: icon(item),
                         alt: `poi-${item.type}`
                     });
-                    marker.bindPopup(poiCard(item));
+                    marker.bindPopup(poiCard(item, dist));
                     if (item.type === 'unsure') {
                         nonClassified.addLayer(marker);
                     } else if (['Wohnhaus', 'Geschäftshaus'].includes(item.type)) {
@@ -137,7 +145,7 @@ function loadPOIs() {
                         interestingPoints.addLayer(marker);
                     }
                 } else {
-                    sortedMap[dist / evaluateWeight(item)] = item;
+                    sortedMap[dist / evaluateWeight(item)] = {i: item, d: dist};
                 }
             }
         }
@@ -147,12 +155,12 @@ function loadPOIs() {
         counter = 0;
         for (const key of keys) {
             if (counter > MaxLoadedAmount) break;
-            let item = sortedMap[key];
+            let item = sortedMap[key].i;
             let marker = L.marker([item.lat, item.lng], {
                 icon: icon(item),
                 alt: `poi-${item.type}`
             });
-            marker.bindPopup(poiCard(item));
+            marker.bindPopup(poiCard(item, sortedMap[key].d));
             if (item.type === 'unsure') {
                 nonClassified.addLayer(marker);
             } else if (['Wohnhaus', 'Geschäftshaus'].includes(item.type)) {
