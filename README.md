@@ -1,3 +1,5 @@
+# ReDiscover Munich
+This web application is available on [Netlify](https://rediscover-munich.netlify.app).
 
 ## Inspiration
 We want to help you discover Munich from a perspective often lost during daily life.
